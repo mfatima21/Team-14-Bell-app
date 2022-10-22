@@ -1,5 +1,15 @@
 <template>
-  <div>
-    <h1>IM THE USER VIEW</h1>
-  </div>
+  <user-profile />
 </template>
+
+<script>
+  import UserProfile from '../components/UserProfile'
+
+  export default {
+    name: 'User',
+
+    components: {
+      UserProfile,
+    },
+  }
+</script>
