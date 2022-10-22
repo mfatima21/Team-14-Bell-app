@@ -2,8 +2,8 @@
   <v-col align="center" justify="center">
     <!-- AVATAR START -->
     <v-row align="center" justify="center">
-      <v-avatar class="mt-1" color="teal" size="56">
-        <img src="../assets/avatar.jpeg" alt="John" />
+      <v-avatar class="mt-1" size="56">
+        <img src="../assets/avatar.jpeg"/>
       </v-avatar>
     </v-row>
     <!-- AVATAR END -->
