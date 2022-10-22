@@ -22,7 +22,6 @@ public class Program
     
     public static void Main(string[] args)
     {
-        // Construct a machine-independent path for the index   
         string? basePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
         string indexPath = Path.Combine(basePath, "index");
         
@@ -47,12 +46,8 @@ public class Program
         Console.WriteLine("Creating index");
         Stopwatch watch = Stopwatch.StartNew();
         
-        // Create an analyzer to process the text
-
-        // Create an index writer
         var indexConfig = new IndexWriterConfig(AppLuceneVersion, analyzer);
         using var writer = new IndexWriter(dir, indexConfig);
-        
         using var reader = new StreamReader(@"/Users/rb/Downloads/recipes_w_search_terms.csv");
         using var csvReader = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
         {
@@ -62,7 +57,6 @@ public class Program
         
         int recipeCount = 0;
         int? MAX_RECIPE_COUNT = null;
-        // MAX_RECIPE_COUNT = 10000;
         IEnumerable<Row> records = csvReader.GetRecords<Row>();
         Regex matchEntries = new Regex(@"'(.*?)'", RegexOptions.Compiled);
 
@@ -106,19 +100,18 @@ public class Program
             return;
         }
         
-        DirectoryReader ireader = DirectoryReader.Open(dir);
-        IndexSearcher isearcher = new IndexSearcher(ireader);
-        
-        // Parse a simple query that searches for "text":
+        DirectoryReader directoryReader = DirectoryReader.Open(dir);
+        IndexSearcher indexSearcher = new IndexSearcher(directoryReader);
+       
         QueryParser parser = new QueryParser(AppLuceneVersion, FIELD_INGREDIENTS, analyzer);
         
         Query query = parser.Parse(searchTerms);
-        ScoreDoc[] hits = isearcher.Search(query, null, 10).ScoreDocs;
+        ScoreDoc[] hits = indexSearcher.Search(query, null, 10).ScoreDocs;
 
         Console.Write("Hits:");
         foreach (ScoreDoc hit in hits)
         {
-            Document? foundDoc = isearcher.Doc(hit.Doc);
+            Document? foundDoc = indexSearcher.Doc(hit.Doc);
             Console.WriteLine(foundDoc.Get(FIELD_RECIPE_NAME));
         }
     }
