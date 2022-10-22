@@ -47,11 +47,9 @@ public class Program
             Console.Out.WriteLine(jsonString);
             return 0;
         }
-        else
-        {
-            // No results -> No output
-            return -1;
-        }
+
+        // No results -> No output
+        return -1;
     }
 
     public static void DeleteIndex(string indexPath)
