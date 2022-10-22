@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using CreateSearchIndex;
 using CsvHelper;
@@ -19,8 +20,10 @@ public class Program
     const LuceneVersion AppLuceneVersion = LuceneVersion.LUCENE_48;
     const string FIELD_INGREDIENTS = "INGREDIENTS";
     const string FIELD_RECIPE_NAME = "RECIPE";
+    const string FIELD_INGREDIENTS_RAW = "INGREDIENTS_RAW";
+    const string FIELD_STEPS = "STEPS";
     
-    public static void Main(string[] args)
+    public static int Main(string[] args)
     {
         string? basePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
         string indexPath = Path.Combine(basePath, "index");
@@ -30,7 +33,25 @@ public class Program
         StandardAnalyzer analyzer = new StandardAnalyzer(AppLuceneVersion);
         
         // CreateIndex(dir, analyzer);
-        SearchInIndex(dir, analyzer);
+        
+        string? searchTerms = string.Join(" ", args);
+        if (string.IsNullOrWhiteSpace(searchTerms))
+        {
+            // No search terms -> No output
+            return -1;
+        }
+        
+        if (TryGetRecipes(dir, analyzer, searchTerms,  out List<Recipe> recipes))
+        {
+            string jsonString = JsonSerializer.Serialize(recipes);
+            Console.Out.WriteLine(jsonString);
+            return 0;
+        }
+        else
+        {
+            // No results -> No output
+            return -1;
+        }
     }
 
     public static void DeleteIndex(string indexPath)
@@ -43,7 +64,7 @@ public class Program
     
     public static void CreateIndex(Directory dir, StandardAnalyzer analyzer)
     {
-        Console.WriteLine("Creating index");
+        Trace.WriteLine("Creating index");
         Stopwatch watch = Stopwatch.StartNew();
         
         var indexConfig = new IndexWriterConfig(AppLuceneVersion, analyzer);
@@ -78,8 +99,13 @@ public class Program
 
             Document doc = new Document
             {
+                // This field is searchable by the user.
+                new TextField(FIELD_INGREDIENTS, ingredientsAsString, Field.Store.NO),
+                
+                // These values can be returned from the found document. (and returned to the client)
                 new StoredField(FIELD_RECIPE_NAME, record.Name),
-                new TextField(FIELD_INGREDIENTS, ingredientsAsString, Field.Store.NO)
+                new StoredField(FIELD_INGREDIENTS_RAW, record.IngredientsRaw),
+                new StoredField(FIELD_STEPS, record.Steps)
             };
             writer.AddDocument(doc);
             recipeCount++;
@@ -87,19 +113,13 @@ public class Program
 
         writer.Flush(triggerMerge: false, applyAllDeletes: false);
         watch.Stop();
-        Console.WriteLine($"Done ({watch.ElapsedMilliseconds}). Index created with {writer.NumDocs} documents.");
+        Trace.WriteLine($"Done ({watch.ElapsedMilliseconds}). Index created with {writer.NumDocs} documents.");
     }
 
-    public static void SearchInIndex(Directory dir, StandardAnalyzer analyzer)
+    public static bool TryGetRecipes(Directory dir, StandardAnalyzer analyzer, string searchTerms, out List<Recipe> recipes)
     {
-        Console.Write("Enter search terms: ");
-        string? searchTerms = Console.ReadLine();
+        recipes = new List<Recipe>();
 
-        if (searchTerms is null)
-        {
-            return;
-        }
-        
         DirectoryReader directoryReader = DirectoryReader.Open(dir);
         IndexSearcher indexSearcher = new IndexSearcher(directoryReader);
        
@@ -108,11 +128,45 @@ public class Program
         Query query = parser.Parse(searchTerms);
         ScoreDoc[] hits = indexSearcher.Search(query, null, 10).ScoreDocs;
 
-        Console.Write("Hits:");
+        Trace.WriteLine("Hits:");
         foreach (ScoreDoc hit in hits)
         {
             Document? foundDoc = indexSearcher.Doc(hit.Doc);
-            Console.WriteLine(foundDoc.Get(FIELD_RECIPE_NAME));
+            recipes.Add(ConvertDocumentToRecipe(foundDoc));   
         }
+
+        Recipe ConvertDocumentToRecipe(Document doc)
+        {
+            Regex matchSteps = new Regex(@"'(.*?)(?<!\\)'", RegexOptions.Compiled);
+            Regex matchIngredientsRaw = new Regex("\"(.*?)(?<!\\\\)\"", RegexOptions.Compiled);
+
+            string stepsField = doc.Get(FIELD_STEPS);
+            List<string> steps = new List<string>();
+            foreach (Match match in matchSteps.Matches(stepsField))
+            {
+                steps.Add(match.Groups[1].Value);
+            }
+
+            List<string> ingredientsRaw = new List<string>();
+            string ingredientsRawField = doc.Get(FIELD_INGREDIENTS_RAW);
+            foreach (Match match in matchIngredientsRaw.Matches(ingredientsRawField))
+            {
+                string value = match.Groups[1].Value;
+                
+                // Replace multiple whitespace characters with single whitespace.
+                value = Regex.Replace(value, @"\s+", " ");
+                
+                ingredientsRaw.Add(value);
+            }
+            
+            return new Recipe
+            {
+                Name = doc.Get(FIELD_RECIPE_NAME),
+                IngredientsWithQuantity = ingredientsRaw,
+                Steps = steps
+            };
+        }
+
+        return recipes.Count > 0;
     }
 }
