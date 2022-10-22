@@ -45,3 +45,7 @@ npm run lint
 ```
 
 :meat_on_bone: :computer: :green_heart: :poultry_leg: :rainbow:
+
+### Documentation
+
+The google presentation is [here](https://docs.google.com/presentation/d/15kZCKr3lPAo_j7qtFoXbP1KHa1h_AUIR23ijlMK8sqs/edit?usp=sharing)
