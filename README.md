@@ -44,4 +44,4 @@ npm run build
 npm run lint
 ```
 
-:computer: :green_heart: :sausage:
+:meat_on_bone: :computer: :green_heart: :poultry_leg: :rainbow:
