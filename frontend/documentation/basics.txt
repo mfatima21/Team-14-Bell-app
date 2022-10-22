@@ -1,0 +1,33 @@
+Who are we?
+- Women quota of 50%
+- Background: students, security engineer, research....
+- Techstacks of each person
+
+Summary of problem statement
+- Open the fridge and have no clue what to do because it is "empty" -> leads to food waste
+- Foodwaste leads to unnecessary CO2-emissions, biodiversity loss and land and water consumption. 
+- According to a study at ETHZ 25 per cent of the environmental impact of our food system is due to food waste: https://www.bafu.admin.ch/bafu/en/home/topics/waste/guide-to-waste-a-z/biodegradable-waste/types-of-waste/lebensmittelabfaelle.html
+- Fighting food waste is in line with Sustainable Development Goal 12.3 of the 2030 Agenda for Sustainable Development: https://www.undp.org/sustainable-development-goals
+- Our solution tackles the problem at the root: provides a way to scan the fridge contents and get recipe suggestions from the products inside
+
+Tech Stack:
+ - VueJS 2
+ - Vuetify
+ - API to XYZ to send the picture and get the ingredients
+ - API to ABC to send products and get back recipes
+ - ....
+
+ Functions
+ - Setup personalized profile -> helps Bell to get to know their customers
+ - Scan fridge -> enrich data with Bell products with self written algorithm -> get recipe suggestions
+
+ Challenges & Learnings
+ - Finding tech stack -> tinker and hack
+ - Finding API: table spoon as ingredient
+ - ...
+
+DEMO
+[] have backup video ready
+- Innovation: Fridge to recipe connects 2 solutions usually tackled separately
+- Innovation: Enrichment with Bell products
+- 
