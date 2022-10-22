@@ -1,13 +1,14 @@
 # Team-14-Bell-app
 
 # Backend setup
-git pull
 
-npm install
+1. git pull
 
-node server.js
+2. npm install
 
-APIs for local use
+3. node server.js
+
+# APIs for local use
 
 localhost:3000/create-recipie
 
