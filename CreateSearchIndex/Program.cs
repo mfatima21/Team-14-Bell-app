@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using CreateSearchIndex;
@@ -43,7 +44,11 @@ public class Program
         
         if (TryGetRecipes(dir, analyzer, searchTerms,  out List<Recipe> recipes))
         {
-            string jsonString = JsonSerializer.Serialize(recipes);
+            string jsonString = JsonSerializer.Serialize(recipes, new JsonSerializerOptions
+            {
+                // Keep unicode symbols intact
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            });
             Console.Out.WriteLine(jsonString);
             return 0;
         }
