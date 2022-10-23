@@ -242,9 +242,10 @@ export default {
     ],
   }),
   created() {
+    const base_url = "http:" + window.location.href.split(':')[1]
     const body = JSON.stringify({});
     axios
-      .post("http://localhost:3000/create-recipie/", body)
+      .post(base_url + "/create-recipie/", body)
       .then((response) => console.log(response.data))
       .catch((error) => {
         this.errorMessage = error.message;
