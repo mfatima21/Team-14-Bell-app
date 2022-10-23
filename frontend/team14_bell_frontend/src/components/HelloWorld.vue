@@ -13,6 +13,13 @@
           prepend-icon="mdi-camera"
           label="Upload Image"
         ></v-file-input>
+        <v-btn
+      depressed
+      color="primary"
+      href="/recipe"
+    >
+      Send
+    </v-btn>
       </v-col>
     </v-row>
   </v-container>
