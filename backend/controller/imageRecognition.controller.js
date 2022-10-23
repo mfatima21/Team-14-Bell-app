@@ -1,7 +1,7 @@
 var request = require('request');
 const fs = require("fs")
 
-const token = "275027b62452734123aa166829ecffa1ada17ecb"
+const token = "49fe2bc9d85a0bea644c7ed0a7f83f7316dfa246"
 
 /**
  * @function extractIngredients
