@@ -23,6 +23,7 @@ public class Program
     const string FIELD_RECIPE_NAME = "RECIPE";
     const string FIELD_INGREDIENTS_RAW = "INGREDIENTS_RAW";
     const string FIELD_STEPS = "STEPS";
+    public static BellRecommendations BellRecommendations = new();
     
     public static int Main(string[] args)
     {
@@ -108,7 +109,7 @@ public class Program
             Document doc = new Document
             {
                 // This field is searchable by the user.
-                new TextField(FIELD_INGREDIENTS, ingredientsAsString, Field.Store.NO),
+                new TextField(FIELD_INGREDIENTS, ingredientsAsString, Field.Store.YES),
                 
                 // These values can be returned from the found document. (and returned to the client)
                 new StoredField(FIELD_RECIPE_NAME, record.Name),
@@ -137,13 +138,21 @@ public class Program
         ScoreDoc[] hits = indexSearcher.Search(query, null, 10).ScoreDocs;
 
         Trace.WriteLine("Hits:");
+
+        // Every Bell product should only be recommended once per query, 
+        // so that the user is not overloaded with Bell products.
+        // Every recipe checks if the recommendation is already used. If it is,
+        // discard it.
+        // --> Cool side effect: Keep recipes at the top.
+        List<BellProduct> allRecipesRecommendations = new List<BellProduct>();
+
         foreach (ScoreDoc hit in hits)
         {
             Document? foundDoc = indexSearcher.Doc(hit.Doc);
-            recipes.Add(ConvertDocumentToRecipe(foundDoc));   
+            recipes.Add(ConvertDocumentToRecipe(foundDoc, allRecipesRecommendations));   
         }
 
-        Recipe ConvertDocumentToRecipe(Document doc)
+        Recipe ConvertDocumentToRecipe(Document doc, List<BellProduct> alreadyRecommended)
         {
             Regex matchSteps = new Regex(@"'(.*?)(?<!\\)'", RegexOptions.Compiled);
             Regex matchIngredientsRaw = new Regex("\"(.*?)(?<!\\\\)\"", RegexOptions.Compiled);
@@ -167,11 +176,32 @@ public class Program
                 ingredientsRaw.Add(value);
             }
             
+            string ingredients = doc.Get(FIELD_INGREDIENTS);
+            List<BellProduct> recommendations = BellRecommendations.GetRecommendations(ingredients);
+            List<BellProduct> filteredRecommendations = new List<BellProduct>();
+
+            foreach (BellProduct recommendedProduct in recommendations)
+            {
+                if (alreadyRecommended.Contains(recommendedProduct))
+                {
+                    // Already recommended for another recipe. Do nothing.
+                    continue;
+                }
+                
+                // Add the recommendation to the current product
+                filteredRecommendations.Add(recommendedProduct);
+                
+                // Add the recommendation to the already recommended products
+                // so it is not used again.
+                alreadyRecommended.Add(recommendedProduct);
+            }
+            
             return new Recipe
             {
                 Name = doc.Get(FIELD_RECIPE_NAME),
                 IngredientsWithQuantity = ingredientsRaw,
-                Steps = steps
+                Steps = steps,
+                Recommendations = filteredRecommendations,
             };
         }
 
