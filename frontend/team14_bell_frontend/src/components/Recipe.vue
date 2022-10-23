@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: "Recipe",
 
@@ -239,5 +241,15 @@ export default {
       },
     ],
   }),
+  created() {
+    const body = JSON.stringify({});
+    axios
+      .post("http://localhost:3000/create-recipie/", body)
+      .then((response) => console.log(response.data))
+      .catch((error) => {
+        this.errorMessage = error.message;
+        console.error("There was an error!", error);
+      });
+  },
 };
 </script>
