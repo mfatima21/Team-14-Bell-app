@@ -57,8 +57,8 @@ export default {
         redirect: 'follow'
       };
 
-      // const base_url = "http://ec2-18-156-118-115.eu-central-1.compute.amazonaws.com";
-      const base_url = "http://localhost:3000";
+      const base_url = "http://ec2-18-156-118-115.eu-central-1.compute.amazonaws.com";
+      // const base_url = "http://localhost:3000";
       const endpiont = base_url + "/recognize-image/"
 
       fetch(endpiont, requestOptions)
