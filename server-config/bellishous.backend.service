@@ -1,0 +1,15 @@
+[Unit]
+Description=Coordi Download Webpage
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/ubuntu/server/coordi-download
+ExecStart=/home/ubuntu/server/coordi-download/target/release/coordi_download
+ExecReload=/bin/kill -HUP $MAINPID
+User=ubuntu
+Restart=always
+RestartSec=4
+
+[Install]
+WantedBy=multi-user.target

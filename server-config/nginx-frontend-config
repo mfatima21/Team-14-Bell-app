@@ -1,0 +1,14 @@
+server {  
+    listen 80;
+    server_name ec2-18-156-118-115.eu-central-1.compute.amazonaws.com;
+
+    access_log /var/log/nginx/bellishous.log;
+    error_log  /var/log/nginx/bellishous.log;
+
+    root /home/ubuntu/Team-14-Bell-app/frontend/team14_bell_frontend/dist;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
