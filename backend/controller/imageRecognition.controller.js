@@ -1,7 +1,7 @@
 var request = require('request');
 const fs = require("fs")
 
-const token = "275027b62452734123aa166829ecffa1ada17ecb"
+const token = "c0f58325076a5795b22f2e7a1e4944387e6272a4"
 
 /**
  * @function extractIngredients
@@ -22,6 +22,8 @@ const token = "275027b62452734123aa166829ecffa1ada17ecb"
  */
 
 const extractIngredients = async (req, res) => {
+
+
     try {
         var options = {
             'method': 'POST',

@@ -30,9 +30,9 @@
         </ol>
       </v-card-text>
 
-      <v-divider class="mx-4"></v-divider>
+      <v-divider v-if="recipe.Recommendations.length > 0" class="mx-4"></v-divider>
 
-      <v-card-title>Perfect fit:</v-card-title>
+      <v-card-title v-if="recipe.Recommendations.length > 0" >Perfect fit:</v-card-title>
 
       <v-card-text>
         <v-chip-group
@@ -60,9 +60,12 @@ export default {
   }),
   created() {
     const base_url = "http://ec2-18-156-118-115.eu-central-1.compute.amazonaws.com";
-    const body = JSON.stringify({});
+    // const base_url = "http://localhost:3000";
+
+    let data = this.$route.params.data;
+
     axios
-      .post(base_url + "/create-recipie/", body)
+      .post(base_url + "/create-recipie/", data.ingredients)
       .then((response) => this.recipes = response.data)
       .catch((error) => {
         this.errorMessage = error.message;
