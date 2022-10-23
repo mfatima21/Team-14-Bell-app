@@ -34,8 +34,10 @@ public class Program
         StandardAnalyzer analyzer = new StandardAnalyzer(AppLuceneVersion);
         
         // CreateIndex(dir, analyzer);
+        // return 0;
         
         string? searchTerms = string.Join(" ", args);
+        // string? searchTerms = Console.ReadLine();
         if (string.IsNullOrWhiteSpace(searchTerms))
         {
             // No search terms -> No output
@@ -69,8 +71,11 @@ public class Program
     {
         Trace.WriteLine("Creating index");
         Stopwatch watch = Stopwatch.StartNew();
-        
-        var indexConfig = new IndexWriterConfig(AppLuceneVersion, analyzer);
+
+        var indexConfig = new IndexWriterConfig(AppLuceneVersion, analyzer)
+        {
+            Similarity = new IgnoreInverseDocumentCount()
+        };
         using var writer = new IndexWriter(dir, indexConfig);
         using var reader = new StreamReader(@"/Users/rb/Downloads/recipes_w_search_terms.csv");
         using var csvReader = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
