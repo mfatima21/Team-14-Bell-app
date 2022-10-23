@@ -36,13 +36,12 @@
 
       <v-card-text>
         <v-chip-group
+        v-for="recom in recipe.Recommendations" :key="recom.Name"
           column
           v-model="selection"
-          active-class="success accent-4 white--text"
+          active-class="bell-colors accent-4 white--text"
         >
-          <v-chip>Bell Merguez</v-chip>
-          <v-chip>Bell Cervelas</v-chip>
-          <v-chip>Bell Angus</v-chip>
+          <v-chip><a :href="recom.Url" target="_blank"> {{recom.Name}} </a></v-chip>
         </v-chip-group>
       </v-card-text>
     </v-card>
@@ -50,199 +49,225 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   name: "Recipe",
 
   data: () => ({
-    selection: 1,
+    selection: 0,
     recipes: [
       {
-        Name: "Rinktum Ditty",
+        Name: "Mami's Mini Chicken Burritos",
         Steps: [
-          "Put the stick of butter in a skillet and brown the onions.",
-          "Then add the tomato soup.",
-          "Now cut the cheese into chunks and simmer until the cheese melts.",
-          "Put and serve over crackers.",
+          "In a large bowl, mix chicken with the beans, tomato, tomato sauce and jalapeno. Meanwhile, heat a large non-stick skillet over low heat. If you know how to heat tortillas in a griddle, then do so, otherwise warm them slightly in the microwave between paper towels. Place one tortilla in a plate. Put about 2 tbs filling in the center of the tortilla, top with a little cheese and lettuce, if desired. Fold the sides of the tortillas over the filling, then fold the side closest to you over the filling and turn burritos over, enclosing the filling. Repeat with remaining tortillas and filling. Place seam side down on the skillet so that the burritos get nice and crispy on the outside and the cheese melts. Serve hot.",
         ],
         IngredientsWithQuantity: [
-          "1 (10 1/4 ounce) can tomato soup (1-2 cans)",
-          "1/2 cup butter",
-          "1 pinch onion",
-          "1 (8 ounce) package sharp cheddar cheese",
+          "1 1/2 cups cooked chicken breasts, shredded ",
+          "1 cup cooked beans (pinto, black or whatever you like)",
+          "1 roma tomato, chopped ",
+          "1/4 cup tomato sauce",
+          "1 -2 canned jalapeno chile, finely chopped ",
+          "1/2 cup shredded cheese (Monterey. Manchego, Oaxaca, Cheddar)",
+          "1 cup shredded lettuce",
+          "10 regular size flour tortillas",
+        ],
+        Recommendations: [
+          {
+            Name: "POULET CERVECAS",
+            Url: "https://www.bell.ch/de/produkte/alle-produkte/produkt/poulet-cervelas-116141/",
+          },
         ],
       },
       {
-        Name: "20 MINUTE BUTTER AND ONION TOMATO SAUCE",
+        Name: "Southwestern Chicken Caesar Wrap",
         Steps: [
-          "Heat the ingredients in a small or medium covered saucepan, over high heat. When the sauce starts to boil, slightly reduce heat to medium-high and leave the lid ajar. Continue cooking for another 15-20 minutes.",
-          "In the meantime, bring a large pot of salted water to a boil and cook the pasta according to package instructions. Discard the onion from the sauce and toss with well drained pasta. Sprinkle a couple of handfuls of your choice of grated Italian cheese and serve.",
+          "Heat chicken in pan, placing into a rectangular shape.",
+          "As it heats, place 2 slices of cheddar on top until just melting.",
+          "Meanwhile, layer lettuce and pico de gallo in center of wrap.",
+          "Top lettuce and pico with heated chicken &amp; cheese pile.",
+          "Top with caesar dressing.",
+          "Wrap &amp; enjoy!",
         ],
         IngredientsWithQuantity: [
-          "2 cups plain pureed tomato sauce",
-          "5 tablespoons unsalted butter",
-          "1 medium onion, peeled and cut in half ",
-          "1 -2 handfuls italian grated cheese (Parmesan, Grana Padano, or Romano)",
-          " bavette pasta (or other long pasta)",
+          "1 (12 inch) sun dried tomato tortillas",
+          "4 ounces grilled chicken breast strips",
+          "2 slices cheddar cheese",
+          "2 tablespoons pico de gallo",
+          "1 cup shredded lettuce",
+          "2 tablespoons caesar salad dressing",
+        ],
+        Recommendations: [],
+      },
+      {
+        Name: "Chicken Ranch Tacos - Quick and Easy",
+        Steps: [
+          "Heat oven to 325 degrees. Heat taco shells for 5-10 minutes to warm.",
+          "Slice chicken into bite-able pieces and put into bowl.",
+          "Warm up chicken in frying pan coated with olive oil adding chopped green onions.",
+          "Stir in 1/2 cup of dressing to coat chicken.",
+          "Spoon chicken mixture into taco shells.",
+          "Top with lettuce, tomato, cheese and olives.",
+          "Add the remaining dressing to each taco, if desired.",
+        ],
+        IngredientsWithQuantity: [
+          "1 (5 ounce) box taco shells",
+          "2 lbs chicken, precooked ",
+          "1 (8 ounce) bottle ranch dressing",
+          "1/2 cup shredded lettuce",
+          "1 cup shredded sharp cheddar cheese",
+          "1 cup chopped tomato",
+          "1/4 cup chopped green onion",
+        ],
+        Recommendations: [
+          {
+            Name: "POULET BRATWURST",
+            Url: "https://www.bell.ch/de/produkte/alle-produkte/produkt/poulet-bratwurst-116143/",
+          },
         ],
       },
       {
-        Name: "Fancy Pants",
+        Name: "Chicken Sliders With Brie",
         Steps: [
-          "Shape hamburger into 8 patties.",
-          "Fold slices of cheese into 4 small squares; put each square between 2 hamburger patties.",
-          "t melt through.\u0022, ",
+          "In a bowl, combine mayo, pesto, and mustard. Mix well. Add chicken and toss to combine. Season to taste with salt and pepper.",
+          "Spread cut side of buns with equal portions of chicken mixture. Lay cheese across top halves.",
+          "Place tops on baking sheet and broil until cheese is just beginning to melt. Garnish with lettuce and tomatoes. Put tops and bottoms together and serve.",
         ],
         IngredientsWithQuantity: [
-          "2 lbs hamburger, seasoned to taste ",
-          "1 (8 ounce) can tomato sauce",
-          "4 slices American cheese",
-          "1 small onion, diced ",
+          "2 tablespoons mayonnaise",
+          "2 tablespoons sun-dried tomato pesto",
+          "1 teaspoon Dijon mustard",
+          "2 cups cooked chicken, diced ",
+          "16 slider buns",
+          "8 ounces brie cheese, sliced ",
+          " baby lettuce leaf",
+          " sliced tomatoes",
+        ],
+        Recommendations: [],
+      },
+      {
+        Name: "Naan Chicken Sandwich",
+        Steps: [
+          "Preheat oven to 450*F. Place bread on baking sheet and cook 5 minutes.",
+          "Stir together chutney and tomato paste in a small bowl. Spread mixture over one piece of bread.",
+          "Toss together remaing ingedents in a medium bowl and pile over tomato mixture. Top with remaning bread and cut into four pieces.",
+        ],
+        IngredientsWithQuantity: [
+          " naan bread, 2 large (or 4 small)",
+          "3 tablespoons mango chutney",
+          "3 tablespoons tomato paste",
+          "1 cup rotisserie-cooked chicken, diced (not cold)",
+          "1 cup romaine lettuce, diced ",
+          "2 tablespoons olive oil",
+        ],
+        Recommendations: [],
+      },
+      {
+        Name: "Solo Greek Style Chicken Salad",
+        Steps: [
+          "Put the olive oil, vinegar, feta cheese, and black pepper into an individual serving salad bowl.",
+          "Mix.",
+          "Add the lettuce, tomatoes, and toss.",
+          "Add the chicken and olives followed by the lemon juice.",
+        ],
+        IngredientsWithQuantity: [
+          "1 cup diced cooked chicken",
+          "1 cup romaine lettuce",
+          "1 roma tomato, diced ",
+          "1/2 cup black olives, pitted and diced ",
+          "2 tablespoons olive oil",
+          "1 tablespoon vinegar",
+          "2 tablespoons feta cheese, crumbled ",
+          "1 teaspoon black pepper",
+          "1 lemon, just the juice ",
+        ],
+        Recommendations: [],
+      },
+      {
+        Name: "Mexican Pizza",
+        Steps: ['t walk away.", '],
+        IngredientsWithQuantity: [
+          "64 inches flour tortillas",
+          " cooking spray",
+          "1 cup salsa",
+          "9 -10 ounces cooked chicken breasts",
+          "2 cups shredded cheddar cheese",
+          "1 cup shredded lettuce",
+          "1/2 cup chopped fresh tomato",
+          "1/2 cup guacamole or 1/2 cup chopped avocado",
+        ],
+        Recommendations: [],
+      },
+      {
+        Name: "Easy Cheesy Chicken Tacos",
+        Steps: [
+          "In large skillet, cook chicken or turkey over medium-high heat until it is no longer pink.",
+          "Stir in taco sauce.",
+          "Continue cooking until mixture just starts to boil.",
+          "Add cheese.",
+          "Remove from heat and stir just until cheese is melted.",
+          "Meanwhile, warm taco shells according to package directions.",
+          "Spoon into taco shells and serve with lettuce, tomato, sour cream, black olives or any other taco fixings your family enjoys.",
+        ],
+        IngredientsWithQuantity: [
+          "1 lb ground chicken (I use ground turkey)",
+          "1 cup taco sauce (you choose the heat)",
+          "2 cups shredded Mexican blend cheese",
+          "10 taco shells",
+          " shredded lettuce",
+          " sour cream",
+          " sliced black olives",
+          " chopped tomato",
+        ],
+        Recommendations: [],
+      },
+      {
+        Name: "Calamity Jane Salad",
+        Steps: [
+          "Heat the tortilla on both sides on a hot dry griddle until bubbles appear.",
+          "Heating the chicken breast is optional, but a microwave works well if you choose to do so.",
+          "Place the tortilla on a plate and top with chicken, lettuce, tomato, avocado, and onion.  Spoon the sour cream and salsa in dollops all over the other ingredients.  Serve open face or fold the tortilla in half over the salad.",
+          "You may garnish with chopped jalapeno, black olives, crisp bacon bits, or cilantro if you like.  Be aware,  however, that olives, bacon, or cilantro will alter the taste.",
+        ],
+        IngredientsWithQuantity: [
+          "1 (12 inch) whole wheat tortillas",
+          "2 leaves romaine lettuce, sliced in thin strips ",
+          "1 cooked chicken breast, boned, skinned, chopped ",
+          "1 roma tomato, chopped ",
+          "1 slice sweet onion, chopped fine ",
+          "1/2 avocado, chopped ",
+          "1/4 cup sour cream",
+          "1/4 cup salsa",
+        ],
+        Recommendations: [
+          {
+            Name: "POULET WIENERLI",
+            Url: "https://www.bell.ch/de/produkte/alle-produkte/produkt/poulet-wienerli-116142/",
+          },
         ],
       },
       {
-        Name: "Crockpot Baked Ziti",
+        Name: "Daily Burn Cobb Salad",
         Steps: [
-          "Combine cheeses in large bowl, reserving some mozzarella. Brown meat with onion, garlic and oregano or Italian seasoning. Drain and return to pan. Add tomato sauce and tomato paste. Stir well and heat through. Spray interior of slow cooker. Place a small layer of meat and sauce mixture on bottom. Cover with dry pasta. Add several spoons of cheese mixture, spread over pasta. Add a layer of sauce, a layer of pasta, a layer of cheese. Repeat until all ingredients are gone. Cook on low 6 hours. Ten minutes before serving, sprinkle reserved mozzarella on top and allow cheese to melt.",
+          "Toss chopped heart of romaine in Dijon dressing.",
+          "Arrange chopped chicken, tomatoes, avocado, and egg on top of spinach and dig in!",
         ],
         IngredientsWithQuantity: [
-          "1 lb ground beef or 1 lb turkey",
-          "1 medium onion, chopped ",
-          "2 teaspoons minced garlic",
-          " oregano or Italian herb seasoning, to taste ",
-          "1 (29 ounce) can tomato sauce",
-          "1 (6 ounce) can tomato paste",
-          "1 lb pasta",
-          "1 (16 ounce) container cottage cheese",
-          "1/2 cup grated parmesan cheese",
-          "1 (16 ounce) bag shredded mozzarella cheese",
+          "1 whole egg",
+          "2 cups of chopped romaine lettuce",
+          "1 whole chicken breast",
+          "1/2 whole avocado",
+          "1/2 whole tomato",
+          "1 tablespoon Dijon mustard",
+          "1 tablespoon olive oil",
+          "1/2 teaspoon apple cider vinegar",
         ],
-      },
-      {
-        Name: "Baked Spaghetti Paula Deen - Fast Version",
-        Steps: [
-          "Crumble Ground Beef into a large skillet.",
-          "Cook over medium-high until no pink is in meat.",
-          "Drain Fat from meat.",
-          "Saute onions in small pan until soft.",
-          "Add meat to 2 cups of bottled tomato sauce",
-          "Add 1 cup of diced tomatoes, onion and pimetos",
-          "Simmer for 20 minutes or more.",
-          "Cook spaghetti as per package.",
-          "Cover bottom of 13 x 9  x 2 pan with sauce.",
-          "Add a layer of pasta and less than 1/2 of each of the cheeses.",
-          "repeat layers ending with sauce on top.",
-          "Bake in oven for 30 minutes.",
-          "Top Casserole with remaining cheese.",
-          "Cook about 5 more minutes.",
-        ],
-        IngredientsWithQuantity: [
-          "1 cup canned diced tomato",
-          "1 (16 ounce) jar tomato sauce",
-          "1 1/2 lbs ground beef",
-          "8 ounces spaghetti",
-          "1 cup grated cheddar cheese",
-          "1 cup grated monterey jack cheese",
-          "1 onion",
-          "1 (6 ounce) jar pimientos",
-        ],
-      },
-      {
-        Name: "Tomato Cheese Fondue",
-        Steps: [
-          "Simmer the tomato juice, lemon and soup mix for about 10 minutes, stirring often.",
-          "Add the shredded cheese one handful at a time, melting between each handful.",
-          "When it is all melted you are done.",
-          "We always use bread but you could use veggies or meat.",
-          "It can be a bit salty so I think that is why bread works best.",
-          "Also if you use a brand name onion soup mix I think its less likely to be too salty.",
-        ],
-        IngredientsWithQuantity: [
-          "1 cup tomato juice",
-          "1 tablespoon lemon juice",
-          "1 (1 1/4 ounce) envelope onion soup mix",
-          "4 cups shredded sharp cheddar cheese",
-        ],
-      },
-      {
-        Name: "Mexican Soupa",
-        Steps: [
-          "Fry noodles in butter until brown and crunchy.",
-          "Fry hamburger, onion, corn and salt to taste.",
-          "Add both to boiling water with tomato sauce and salsa in it.",
-          "Boil until noodles are done to your liking.",
-          "Add to bowls top with a whole bunch of cheddar cheese.",
-        ],
-        IngredientsWithQuantity: [
-          "5 -6 cups noodles",
-          "5 (15 ounce) cans tomato sauce (5-6 cans)",
-          "1 -2 lb hamburger",
-          "1 whole onion, diced ",
-          "2 tablespoons butter",
-          " salt",
-          "4 -6 cups cheese",
-          "1 (15 ounce) can corn",
-          "1 -2 cup salsa",
-        ],
-      },
-      {
-        Name: "Rondele Potato Salad",
-        Steps: [
-          "Peel and dice potatoes, place in large pot.  Cover with water and boil until potatoes flake when touched by a fork.",
-          "While potatoes are cooking, brown and crumble the bacon.",
-          "Drain potatoes and pour them into a large bowl.",
-          "Add bacon crumbs, sundried tomatoes, onion, and entire tub of Rondele cheese to potatoes.  Stir to blend well.",
-          "Serve hot or cold.",
-        ],
-        IngredientsWithQuantity: [
-          "1 (8 ounce) container rondele garlic \\u0026 herb cheese spread",
-          "8 medium potatoes",
-          "1/2 cup sun-dried tomato, diced ",
-          "1/2 cup vidalia onion, diced ",
-          "6 slices bacon",
-        ],
-      },
-      {
-        Name: "Spaghetti Bolognese",
-        Steps: [
-          "Brown onion and meat until well done.",
-          "Meanwhile cook spaghetti.",
-          "Add traditional sauce to meat  and  flavor with Italian seasonings.",
-          "When spaghetti is done, drain and serve with sauce.",
-        ],
-        IngredientsWithQuantity: [
-          "1 lb ground beef",
-          "1 chopped onion",
-          "1 (28 ounce) can tomato sauce",
-          "1 tablespoon oregano",
-          "1 lb spaghetti",
-          " parmesan cheese",
-        ],
-      },
-      {
-        Name: "Bacon and Cheese Hot Dish",
-        Steps: [
-          "Cook macaroni.",
-          "Cut bacon into small pieces and fry until almost done. Drain off grease, add onion and finish cooking.",
-          "Mix salt, pepper and tomato sauce, then add cooked bacon and onion.",
-          "Put cooked macaroni in a 13x9 inch pan then pour tomato mixture over macaroni, top with cheese.",
-          "Bake at 350 for 30-40 minute.",
-        ],
-        IngredientsWithQuantity: [
-          "2 cups macaroni",
-          "1 lb sliced bacon",
-          "1 medium chopped onion",
-          "2 (15 ounce) cans tomato sauce",
-          "1/4 teaspoon salt",
-          "1/8 teaspoon pepper",
-          "1/4 lb cubed Velveeta cheese",
-        ],
+        Recommendations: [],
       },
     ],
   }),
   created() {
-    const base_url = "http:" + window.location.href.split(':')[1]
+    const base_url = "http://ec2-18-156-118-115.eu-central-1.compute.amazonaws.com";
     const body = JSON.stringify({});
     axios
       .post(base_url + "/create-recipie/", body)
@@ -254,3 +279,29 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.bell-colors {
+  background-color: #d9161b;
+  color: white !important;
+}
+ /* unvisited link */
+ a:link {
+  color: white;
+}
+
+/* visited link */
+a:visited {
+  color: white;
+}
+
+/* mouse over link */
+a:hover {
+  color: white;
+}
+
+/* selected link */
+a:active {
+  color: white;
+} 
+</style>
