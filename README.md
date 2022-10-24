@@ -13,6 +13,10 @@ We are using an API to which an image can be sent, and the products are recogniz
 - Node
 - NPM
 
+## Dataset
+
+- This dataset was used to get ingredients from recipes: [Food.com Recipes with Search Terms and Tags (Kaggle)](https://www.kaggle.com/datasets/shuyangli94/foodcom-recipes-with-search-terms-and-tags)
+
 ## Uses
 - VueJS 2
 - Vuetify
